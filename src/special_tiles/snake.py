@@ -9,7 +9,7 @@ class Snake(Tile):
         self.drop_position = drop_position
 
     def action_message(self):
-        return f"was bitten by a snake, will be moved to" # Figure out
+        return f" was bitten by a snake, will be moved to {self.drop_position}" # Figure out
 
     def tile_action(self) -> Tuple[TileAction, int]:
         return TileAction.GOTO, self.drop_position

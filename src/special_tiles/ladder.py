@@ -8,7 +8,7 @@ class Ladder(Tile):
         self.lift_position = lift_position
 
     def action_message(self):
-        return f"has reached a ladder, will climb to" # Figure out
+        return f" has reached a ladder, will climb to {self.lift_position}" # Figure out
 
     def tile_action(self) -> Tuple[TileAction, int]:
         return TileAction.GOTO, self.lift_position

@@ -20,17 +20,15 @@ class Tile(ABC):
         self.is_winning = True
 
     def add_player(self, player):
-        assert len(self.players) == 0 or self.is_starting or self.is_winning
+        assert len(self.players) <= 1 or self.is_starting or self.is_winning, self.players
         self.players.add(player)
 
     def remove_player(self, player):
         self.players.discard(player)
 
-    @abstractmethod
     def action_message(self):
         ...
 
-    @abstractmethod
     def tile_action(self):
         ...
         

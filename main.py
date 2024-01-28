@@ -1,8 +1,19 @@
 import sys
+import logging
 
 from src.setupRules.json import JSONReader
 from src.buildGame import GameBuilder
 
+logger = logging.getLogger('Main')
+logger.setLevel(logging.DEBUG)
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+# add the handlers to logger
+logger.addHandler(ch)
 
 def main(file_name):
     reader = JSONReader(file_name)
@@ -14,4 +25,5 @@ def main(file_name):
 
 
 if __name__ == '__main__':
-    main(sys.argv[0])
+    main(sys.argv[1])
+

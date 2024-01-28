@@ -1,9 +1,12 @@
 from enum import Enum, auto
+import logging
 from typing import List
 
-from board import Board
-from player import Player
-from dice_strategy.base import BaseDiceStrategy
+from .board import Board
+from .player import Player
+from .dice_strategy.base import BaseDiceStrategy
+
+logger = logging.getLogger('Main')
 
 class GameState(Enum):
     NOT_STARTED = auto()
@@ -19,7 +22,9 @@ class Game:
 
     def start_game(self):
         assert self._game_state is GameState.NOT_STARTED
+        logger.info('Starting game...')
         self._game_state = GameState.ONGOING
+        self.rounds = 0
 
     def end_game(self):
         assert self._game_state is GameState.ONGOING
@@ -33,11 +38,15 @@ class Game:
         if self._game_state == GameState.ENDED:
             print('Game has ended, try starting a new game')
             return
+        self.rounds += 1
+        logger.info("Starting Round %d", self.rounds)
         for player in self.players:
             assert self.board.is_player_on_board(player)
-            pos_delta = self.dice_strategy.roll_dice()
-            has_won = self.board.move_player(pos_delta)
+            pos_delta, msg = self.dice_strategy.roll_dice()
+            logger.info(f"{player}"+msg)
+            has_won = self.board.move_player(player, pos_delta)
             if has_won: # Could refactor to diff rule where we wait till all but last player completes
+                logger.info('%s has won the game', str(player))
                 self.end_game()
                 break
                 # Should be logging the tile message too

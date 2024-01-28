@@ -2,3 +2,4 @@
 venv/*
 todo
 sample.json
+__pycache__
