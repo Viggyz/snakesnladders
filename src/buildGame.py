@@ -1,0 +1,6 @@
+class GameBuilder:
+    def __init__(self):
+        ...
+
+    def CountValues(self):
+        ...
