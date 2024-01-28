@@ -1,4 +1,4 @@
-from enum import Enum, auto()
+from enum import Enum, auto
 from typing import List
 
 from board import Board
@@ -35,12 +35,13 @@ class Game:
             return
         for player in self.players:
             assert self.board.is_player_on_board(player)
-            # if player.restricted:
-            #     print(f"Player {player} cannot move")
-            #     continue
             pos_delta = self.dice_strategy.roll_dice()
             has_won = self.board.move_player(pos_delta)
             if has_won: # Could refactor to diff rule where we wait till all but last player completes
                 self.end_game()
                 break
                 # Should be logging the tile message too
+
+    @property
+    def is_ongoing(self):
+        return self._game_state == GameState.ONGOING
