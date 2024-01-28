@@ -4,7 +4,7 @@ from .tile import Tile, TileAction
 
 class Snake(Tile):
     def __init__(self, drop_position: int):
-        super(Snake).__init__(is_special=False)
+        super().__init__(is_special=False)
         self.is_special = True
         self.drop_position = drop_position
 

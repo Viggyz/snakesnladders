@@ -39,14 +39,14 @@ class Game:
             print('Game has ended, try starting a new game')
             return
         self.rounds += 1
-        logger.info("Starting Round %d", self.rounds)
+        logger.info("-- Starting Round %d --", self.rounds)
         for player in self.players:
             assert self.board.is_player_on_board(player)
             pos_delta, msg = self.dice_strategy.roll_dice()
             logger.info(f"{player}"+msg)
             has_won = self.board.move_player(player, pos_delta)
             if has_won: # Could refactor to diff rule where we wait till all but last player completes
-                logger.info('%s has won the game', str(player))
+                logger.info('-x-x- %s has won the game -x-x-', str(player))
                 self.end_game()
                 break
                 # Should be logging the tile message too

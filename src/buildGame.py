@@ -20,6 +20,7 @@ class GameBuilder:
         logger.debug('Begin Game Setup...')
         self.reader.consume()
 
+        logger.debug('-- Begin Board Setup --')
         # Setup base board
         board = Board(self.reader.board_size)
 
@@ -27,10 +28,10 @@ class GameBuilder:
         logger.info('Setup special tiles')
         special_tiles = []
         for tile_type, info in self.reader.special_tiles:
-            if tile_type == SpecialTile.SNAKE:
+            if tile_type == SpecialTile.SNAKE.value:
                 pos, drop_pos = info
                 special_tiles.append((Snake(drop_pos), pos))
-            elif tile_type == SpecialTile.LADDER:
+            elif tile_type == SpecialTile.LADDER.value:
                 pos, lift_pos = info
                 special_tiles.append((Ladder(lift_pos), pos))
         board.add_special_tiles(special_tiles)

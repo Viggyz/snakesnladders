@@ -4,7 +4,7 @@ from .tile import Tile, TileAction
 
 class Ladder(Tile):
     def __init__(self, lift_position: int):
-        super(Ladder).__init__(is_special=True)
+        super().__init__(is_special=True)
         self.lift_position = lift_position
 
     def action_message(self):

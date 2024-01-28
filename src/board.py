@@ -21,7 +21,7 @@ class Board:
     def add_special_tiles(self, tiles: List[Tuple[Tile, int]]):
         for tile, position in tiles:
             # verify if valid positioning outside method while building game
-            assert isinstance(tile, Tile) and tile.is_special is False
+            assert isinstance(tile, Tile) and tile.is_special, tile
             self.tiles[position] = tile
 
     def set_player_location(self, player: Player, position: int):
@@ -51,7 +51,7 @@ class Board:
                 reset_player = tile.players.pop()
                 self.set_player_location(reset_player, 1)
                 logger.info("%s", f"{reset_player} was at {new_pos}, {reset_player} is moved to 1")
-            elif tile.is_special:
+            if tile.is_special:
                 action, value = tile.tile_action()
                 if action == TileAction.GOTO:
                     new_pos = value
