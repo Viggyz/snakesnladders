@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from .tile import Tile, TileActions
+from .tile import Tile, TileAction
 
 class Ladder(Tile):
     def __init__(self, lift_position: int):
@@ -10,5 +10,5 @@ class Ladder(Tile):
     def action_message(self):
         return f"has reached a ladder, will climb to" # Figure out
 
-    def tile_action(self) -> Tuple[TileActions, int]:
-        return TileActions.GOTO, self.lift_position
+    def tile_action(self) -> Tuple[TileAction, int]:
+        return TileAction.GOTO, self.lift_position

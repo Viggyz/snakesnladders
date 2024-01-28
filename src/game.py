@@ -35,12 +35,12 @@ class Game:
             return
         for player in self.players:
             assert self.board.is_player_on_board(player)
+            # if player.restricted:
+            #     print(f"Player {player} cannot move")
+            #     continue
             pos_delta = self.dice_strategy.roll_dice()
-            try:
-                has_won = self.board.move_player(pos_delta)
-                if has_won: # Could refactor to diff rule where we wait till all but last player completes
-                    self.end_game()
-                    break
+            has_won = self.board.move_player(pos_delta)
+            if has_won: # Could refactor to diff rule where we wait till all but last player completes
+                self.end_game()
+                break
                 # Should be logging the tile message too
-            else:
-                print(f"Player {player} cannot move")
