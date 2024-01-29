@@ -4,6 +4,7 @@ from enum import Enum, auto
 class TileAction(Enum):
     GOTO = auto()
     GOTO_DELTA = auto()
+    FREEZE = auto()
 
 class Tile(ABC):
     def __init__(self, is_special=False):

@@ -15,6 +15,8 @@ class Board:
 
         self._player_locations = {} # Pos, player
 
+        self._frozen_players = {} # Player, turns_remaining
+
     def is_valid_tile(self, position):
         return 0 < position <= len(self.tiles) - 1
 
@@ -44,9 +46,18 @@ class Board:
         self.set_player_location(player, position)
 
     def move_player(self, player: Player, position_delta: int) -> bool: # Could be negative in case of snakes
+        # If player not frozen
+        has_won = False
+        if player in self._frozen_players:
+            if self._frozen_players[player] == 0:
+                del self._frozen_players[player]
+            else:
+                self._frozen_players[player] -= 1
+                logger.info("%s is frozen for another %d turns, skipping turn", str(player), self._frozen_players[player])
+                return has_won
+
         player_pos = self._player_locations[player]
         new_pos = player_pos + position_delta
-        has_won = False
         if self.is_valid_tile(new_pos):
             tile = self.tiles[new_pos]
             logger.info(f"{player} has moved from {player_pos} to {new_pos}")
@@ -55,10 +66,13 @@ class Board:
                 action, value = tile.tile_action()
                 if action == TileAction.GOTO:
                     new_pos = value
+                    self.set_player_location(player, new_pos)
                 elif action == TileAction.GOTO_DELTA:
                     new_pos = new_pos - value
+                    self.set_player_location(player, new_pos)
+                elif action == TileAction.FREEZE:
+                    self._frozen_players[player] = value
                 logger.info("%s", str(player) + tile.action_message())
-                self.set_player_location(player, new_pos)
             has_won = self.tiles[new_pos].is_winning
         else:
             logger.info("%s cannot move to %d, remains at %d", str(player), new_pos, player_pos)
