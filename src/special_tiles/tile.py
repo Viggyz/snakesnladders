@@ -3,6 +3,7 @@ from enum import Enum, auto
 
 class TileAction(Enum):
     GOTO = auto()
+    GOTO_DELTA = auto()
 
 class Tile(ABC):
     def __init__(self, is_special=False):
@@ -20,7 +21,7 @@ class Tile(ABC):
         self.is_winning = True
 
     def add_player(self, player):
-        assert len(self.players) <= 1 or self.is_starting or self.is_winning, self.players
+        assert len(self.players) <= 1 or self.is_starting or self.is_winning, self
         self.players.add(player)
 
     def remove_player(self, player):

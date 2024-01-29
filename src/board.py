@@ -10,7 +10,7 @@ logger = logging.getLogger('Main')
 class Board:
     def __init__(self, tiles=100):
         self.tiles = [Tile() for _ in range(tiles+1)]
-        self.tiles[0].set_starting()
+        self.tiles[1].set_starting()
         self.tiles[-1].set_winning()
 
         self._player_locations = {} # Pos, player
@@ -26,6 +26,10 @@ class Board:
 
     def set_player_location(self, player: Player, position: int):
         tile = self.tiles[position]
+        if len(tile.players) and self._player_locations[list(tile.players)[0]] != 1 and not self.tiles[self._player_locations[list(tile.players)[0]]].is_winning:
+            reset_player = list(tile.players)[0]
+            logger.info("Player %s found at position %d, moving to starting", reset_player, self._player_locations[reset_player])
+            self.set_player_location(reset_player, 1)
         tile.add_player(player)
         if player in self._player_locations:
             self.tiles[self._player_locations[player]].remove_player(player)
@@ -46,17 +50,15 @@ class Board:
         if self.is_valid_tile(new_pos):
             tile = self.tiles[new_pos]
             logger.info(f"{player} has moved from {player_pos} to {new_pos}")
-            if not tile.is_starting and not tile.is_winning and len(tile.players):
-                assert len(tile.players) == 1
-                reset_player = tile.players.pop()
-                self.set_player_location(reset_player, 1)
-                logger.info("%s", f"{reset_player} was at {new_pos}, {reset_player} is moved to 1")
+            self.set_player_location(player, new_pos)
             if tile.is_special:
                 action, value = tile.tile_action()
                 if action == TileAction.GOTO:
                     new_pos = value
+                elif action == TileAction.GOTO_DELTA:
+                    new_pos = new_pos - value
                 logger.info("%s", str(player) + tile.action_message())
-            self.set_player_location(player, new_pos)
+                self.set_player_location(player, new_pos)
             has_won = self.tiles[new_pos].is_winning
         else:
             logger.info("%s cannot move to %d, remains at %d", str(player), new_pos, player_pos)

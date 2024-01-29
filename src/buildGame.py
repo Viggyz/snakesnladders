@@ -7,7 +7,7 @@ from .enums import SpecialTile, DiceStrategy
 from .game import Game
 from .player import Player
 from .setupRules.base import FileReader
-from .special_tiles import Snake, Ladder
+from .special_tiles import Snake, Ladder, Crocodile
 
 logger = logging.getLogger('Main')
 
@@ -34,6 +34,9 @@ class GameBuilder:
             elif tile_type == SpecialTile.LADDER.value:
                 pos, lift_pos = info
                 special_tiles.append((Ladder(lift_pos), pos))
+            elif tile_type == SpecialTile.CROCODILE.value:
+                pos, *_ = info
+                special_tiles.append((Crocodile(), pos))
         board.add_special_tiles(special_tiles)
 
         logger.info('Adding players to board')
